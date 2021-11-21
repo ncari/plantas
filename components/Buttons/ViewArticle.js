@@ -1,30 +1,16 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import colors from "../../constants/styles/colors";
+import { Text, TouchableOpacity } from "react-native";
+import tw from "twrnc";
 
 function ViewArticleButton({ onPress = () => {} }) {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Text style={styles.text}>View Article</Text>
+    <TouchableOpacity
+      style={tw`px-4 py-3 border border-green-600 bg-transparent  rounded-tl-2xl rounded-tr-md rounded-bl-2xl rounded-br-2xl`}
+      onPress={onPress}
+    >
+      <Text style={tw`text-center text-green-600`}>View Article</Text>
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 15,
-    backgroundColor: colors.BLUE,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 5,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-  },
-
-  text: {
-    fontWeight: "bold",
-    color: colors.WHITE,
-    textAlign: "center",
-  },
-});
 
 export default ViewArticleButton;

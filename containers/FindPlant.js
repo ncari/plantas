@@ -7,7 +7,9 @@ import {
   StatusBar,
   ImageBackground,
 } from "react-native";
+
 import FindPlantCard from "../components/FindPlantCard";
+import Background from "../assets/exploreBackground.jpg";
 
 const requests = [
   {
@@ -56,7 +58,7 @@ function FindPlant() {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={require("../assets/exploreBackground.jpg")}
+        source={Background}
         resizeMode="cover"
         style={styles.background}
       >
@@ -71,7 +73,7 @@ function FindPlant() {
             />
           )}
           data={requests}
-          renderItem={({ item, index }) => (
+          renderItem={({ index }) => (
             <View style={index % 2 == 0 && { marginRight: 10 }}>
               <FindPlantCard />
             </View>

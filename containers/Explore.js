@@ -1,121 +1,64 @@
-import React, { useState } from "react";
-import {
-  FlatList,
-  ImageBackground,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { TextInput } from "react-native-gesture-handler";
-import colors from "../constants/styles/colors";
+import React from "react";
+import { Text, View, FlatList, Image } from "react-native";
+import { Bookmark, ChevronDown, Circle, Eye } from "react-native-feather";
+import tw from "twrnc";
 
-const title = "Some title";
-const description = "Lorem ipsum dolor sit amet consequeaut";
-const data = [1, 2, 3, 4, 5, 6].map((i) => ({
-  id: i,
-  title: `${title} ${i}`,
-  description: `${description} ${i}`,
-}));
-
-const renderItem = ({ item }) => (
-  <View style={styles.item}>
-    <Text style={[styles.white, styles.bold]}>{item.title}</Text>
-    <Text style={styles.white}>{item.description}</Text>
-  </View>
-);
-
-const renderArticles = () => (
-  <FlatList data={data} renderItem={renderItem} keyExtractor={(i) => i.id} />
-);
-
-const renderPeople = () => (
-  <View>
-    <Text>People</Text>
-  </View>
-);
-
-function Tabs({
-  initial = "",
-  renderPeople = () => {},
-  renderArticles = () => {},
-}) {
-  const [current, setCurrent] = useState(initial);
-  const people = current === "people";
-
-  const handleTabChange = () => {
-    setCurrent(people ? "articles" : "people");
-  };
-  return (
-    <View style={styles.tabsContainer}>
-      <View style={styles.tabsOptions}>
-        <TouchableOpacity onPress={handleTabChange}>
-          <Text style={!people && { fontWeight: "bold" }}>Articles</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleTabChange}>
-          <Text style={people && { fontWeight: "bold" }}>People</Text>
-        </TouchableOpacity>
+function ExploreScreen({ navigation, articles, loading, onRefresh }) {
+  const renderItem = ({ item }) => (
+    <View style={tw`p-4`}>
+      <View style={tw`flex-row items-center justify-between mb-2`}>
+        <View style={tw`flex-row items-center`}>
+          <Image
+            source={require("../assets/profile.jpg")}
+            style={[tw`rounded-full`, { height: 36, width: 36 }]}
+          />
+          <Text style={tw`text-xs ml-2 tracking-tighter`}>Jane Doe</Text>
+          <Text style={tw`text-xs ml-2 text-gray-400 tracking-tighter mr-2`}>
+            2 Julio
+          </Text>
+          <Circle fill={tw.color("gray-400")} width={6} height={6} />
+          <Text style={tw`text-xs ml-2 text-gray-400 tracking-tighter`}>
+            3 min read
+          </Text>
+        </View>
+        <Bookmark stroke={tw.color("green-600")} />
       </View>
-      {people ? renderPeople() : renderArticles()}
+      <Image
+        source={{
+          uri: `data:image/jpg;base64,${item.image}`,
+        }}
+        style={[tw`rounded-lg w-full mb-2`, { height: 200 }]}
+      />
+      <Text style={tw`text-xl font-bold mb-3`}>{item.title}</Text>
+      <Text style={tw`mb-2`}>{item.resume}</Text>
+      <View style={tw`flex-row justify-between`}>
+        <View style={tw`flex-row items-center`}>
+          <Eye stroke={tw.color("green-600")} />
+          <Text style={tw`ml-1 text-black`}>36</Text>
+        </View>
+        <ChevronDown
+          stroke={tw.color("gray-400")}
+          onPress={() => {
+            navigation.navigate("Article", item);
+          }}
+        />
+      </View>
+    </View>
+  );
+
+  return (
+    <View style={tw`flex-1 bg-white`}>
+      <FlatList
+        data={articles}
+        renderItem={renderItem}
+        ItemSeparatorComponent={() => (
+          <View style={tw`border-b border-gray-100 mx-4`} />
+        )}
+        refreshing={loading}
+        onRefresh={onRefresh}
+      />
     </View>
   );
 }
-
-function ExploreScreen() {
-  return (
-    <ImageBackground style={styles.background}>
-      <View style={styles.container}>
-        <Text>Explore</Text>
-        <TextInput placeholder="Search" />
-        <Tabs
-          initial="articles"
-          renderPeople={renderPeople}
-          renderArticles={renderArticles}
-        />
-      </View>
-    </ImageBackground>
-  );
-}
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    paddingTop: StatusBar.currentHeight || 0,
-  },
-
-  container: {
-    flex: 1,
-    width: "80%",
-    alignSelf: "center",
-  },
-
-  item: {
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    backgroundColor: "#0e8a00",
-    marginBottom: 5,
-  },
-
-  white: {
-    color: colors.WHITE,
-  },
-
-  bold: {
-    fontWeight: "bold",
-  },
-
-  tabsOptions: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-  },
-
-  tabsContainer: {
-    flex: 1,
-  },
-});
 
 export default ExploreScreen;
