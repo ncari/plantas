@@ -18,7 +18,7 @@ import { useImagePicker } from "../services/hooks";
 import { createFormData } from "../utils/helpers";
 
 function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
-  const { token } = useContext(context);
+  const { token, setError } = useContext(context);
   const [name, setName] = useState("");
   const [water, setWater] = useState(0);
   const [sun, setSun] = useState(0);
@@ -27,7 +27,7 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
 
   const submitHandler = async () => {
     try {
-      const plant = await PostImage(
+      const { data } = await PostImage(
         "/plants",
         createFormData(image, {
           name: name,
@@ -37,10 +37,10 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
         }),
         token
       );
-      onNewPlantSuccess(plant);
+      onNewPlantSuccess(data);
       navigation.goBack();
     } catch (error) {
-      alert(error);
+      setError();
     }
   };
 

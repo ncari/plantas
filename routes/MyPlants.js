@@ -12,26 +12,26 @@ import { Get } from "../services/apicall.js";
 const Stack = createStackNavigator();
 
 function MyPlantsStack() {
-  const { token } = useContext(context);
+  const { token, setError } = useContext(context);
   const [loading, setLoading] = useState(false);
   const [plants, setPlants] = useState([]);
 
   useEffect(async () => {
     try {
-      const plants = await Get("/plants", token);
-      setPlants(plants);
+      const { data } = await Get("/plants", token);
+      setPlants(data);
     } catch (error) {
-      alert(error);
+      setError();
     }
   }, []);
 
   const handleRefresh = async () => {
     try {
       setLoading(true);
-      const plants = await Get("/plants", token);
-      setPlants(plants);
+      const { data } = await Get("/plants", token);
+      setPlants(data);
     } catch (error) {
-      alert(error);
+      setError();
     }
     setLoading(false);
   };

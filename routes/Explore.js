@@ -14,26 +14,26 @@ import context from "../services/context";
 const Stack = createStackNavigator();
 
 function ExploreStack({ navigation }) {
-  const { token } = useContext(context);
+  const { token, setError } = useContext(context);
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(async () => {
     try {
-      const articles = await Get("/articles", token);
-      setArticles(articles);
+      const { data } = await Get("/articles", token);
+      setArticles(data);
     } catch (error) {
-      alert(JSON.stringify(error));
+      setError();
     }
   }, []);
 
   const handleRefresh = async () => {
     try {
       setLoading(true);
-      const articles = await Get("/articles", token);
-      setArticles(articles);
+      const { data } = await Get("/articles", token);
+      setArticles(data);
     } catch (error) {
-      alert(error);
+      setError();
     }
     setLoading(false);
   };

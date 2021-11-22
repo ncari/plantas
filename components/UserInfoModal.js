@@ -19,26 +19,12 @@ function UserInfoModal({
   const { token } = useContext(context);
 
   const unfollow = async () => {
-    await Put(
-      "/users/followers/unfollow",
-      JSON.stringify({
-        id: user.id,
-      }),
-      token,
-      false
-    );
+    await Put("/users/followers/unfollow", { id: user.id }, token);
     onUnfollowSuccess();
   };
 
   const follow = async () => {
-    await Put(
-      "/users/followers/follow",
-      JSON.stringify({
-        id: user.id,
-      }),
-      token,
-      false
-    );
+    await Put("/users/followers/follow", { id: user.id }, token);
     onFollowSuccess();
   };
   return (

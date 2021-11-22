@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { Platform, TouchableOpacity, Text } from "react-native";
+import { useContext, useState } from "react";
+import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import tw from "twrnc";
+import context from "./context";
 
 export const useImagePicker = (aspect = [4, 3]) => {
   const [image, setImage] = useState(null);
+  const { setError } = useContext(context);
 
   const clear = () => setImage(null);
 
@@ -13,7 +14,9 @@ export const useImagePicker = (aspect = [4, 3]) => {
       const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== "granted") {
-        alert("Sorry, we need camera roll permissions to make this work!");
+        setError(
+          "Lo sentimos, necesitamos permisos de la camara para continuar"
+        );
       } else {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,

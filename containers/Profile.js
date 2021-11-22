@@ -14,23 +14,23 @@ import { Get } from "../services/apicall";
 import context from "../services/context";
 
 function ProfileScreen() {
-  const { token, clearToken } = useContext(context);
+  const { token, clearToken, setError } = useContext(context);
   const [data, setData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     Get("/user", token)
-      .then((data) => setData(data))
-      .catch((err) => alert(err.message));
+      .then(({ data }) => setData(data))
+      .catch((err) => setError());
   }, []);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     try {
-      const data = await Get("/user", token);
+      const { data } = await Get("/user", token);
       setData(data);
     } catch (err) {
-      alert(err.message);
+      setError();
     }
     setRefreshing(false);
   }, []);

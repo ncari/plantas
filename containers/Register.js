@@ -17,8 +17,8 @@ function RegisterScreen() {
   const handleSubmit = async () => {
     // validate
 
-    const token = await Register(name, email, password, Device.deviceName);
-    setToken(token);
+    const { data } = await Register(name, email, password, Device.deviceName);
+    setToken(data);
   };
 
   return (

@@ -22,7 +22,7 @@ function NewPostModal({
   onPostSuccess = () => {},
   onPostFail = () => {},
 }) {
-  const { token } = useContext(context);
+  const { token, setError } = useContext(context);
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -33,7 +33,9 @@ function NewPostModal({
       const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== "granted") {
-        alert("Sorry, we need camera roll permissions to make this work!");
+        setError(
+          "Lo sientimos. Neceistamos permisos de la camara para continuar."
+        );
       } else {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -60,7 +62,7 @@ function NewPostModal({
     setLoading(true);
 
     try {
-      const post = await PostImage(
+      const { data } = await PostImage(
         "/posts",
         createFormData(image, {
           title,
@@ -68,7 +70,7 @@ function NewPostModal({
         }),
         token
       );
-      onPostSuccess(post);
+      onPostSuccess(data);
     } catch (err) {
       onPostFail(err);
     }

@@ -14,6 +14,7 @@ import MyPlantsStack from "./routes/MyPlants";
 import SignIn from "./containers/SignIn";
 import Register from "./containers/Register";
 import TokenContext from "./services/context";
+import ErrorContainer from "./components/ErrorContainer";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -22,20 +23,25 @@ export default function App() {
   const [tokenChecked, setTokenChecked] = useState(false);
   const [contextValue, setContextValue] = useState({
     token: "",
+    error: "",
+
     setToken: async (token) => {
       await SecureStore.setItemAsync("token", token);
-      setContextValue({
-        ...contextValue,
-        token,
-      });
+      setContextValue((c) => ({ ...c, token }));
     },
     clearToken: async () => {
       await SecureStore.setItemAsync("token", "");
-      setContextValue({
-        ...contextValue,
-        token: "",
-      });
+      setContextValue((c) => ({ ...c, token: "" }));
     },
+
+    clearError: () => {
+      setContextValue((c) => ({ ...c, error: "" }));
+    },
+    setError: (msg) =>
+      setContextValue((c) => ({
+        ...c,
+        error: msg || "Hubo un error. Intentelo mas tarde.",
+      })),
   });
 
   useEffect(async () => {
@@ -102,6 +108,7 @@ export default function App() {
           </Stack.Navigator>
         )}
       </NavigationContainer>
+      <ErrorContainer />
     </TokenContext.Provider>
   );
 }

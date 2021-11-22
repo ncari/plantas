@@ -16,22 +16,22 @@ function HomeScreen({
   const [plants, setPlants] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const { token } = useContext(context);
+  const { token, setError } = useContext(context);
 
   useEffect(() => {
     Get("/posts", token)
-      .then((data) => setPlants(data))
-      .catch((err) => alert(err.message));
+      .then(({ data }) => setPlants(data))
+      .catch(() => setError());
   }, []);
 
   const handleRefresh = async () => {
     setRefreshing(true);
 
     try {
-      const data = await Get("/posts", token);
+      const { data } = await Get("/posts", token);
       setPlants(data);
     } catch (err) {
-      alert(err.message);
+      setError();
     }
 
     setRefreshing(false);
@@ -48,7 +48,7 @@ function HomeScreen({
 
   const onPostFail = (err) => {
     closeModal();
-    alert(err.message);
+    setError();
   };
 
   const handleAddInteraction = async (id) => {
@@ -64,7 +64,7 @@ function HomeScreen({
       plants[i].interactions_count -= 1;
       plants[i].interacted = false;
       setPlants([...plants]);
-      alert(error.message);
+      setError();
     }
   };
 
@@ -81,7 +81,7 @@ function HomeScreen({
       plants[i].interactions_count += 1;
       plants[i].interacted = true;
       setPlants([...plants]);
-      alert(error.message);
+      setError();
     }
   };
 
@@ -93,8 +93,8 @@ function HomeScreen({
   };
 
   const handlePressUser = async (user_id) => {
-    const user = await Get(`/users/${user_id}`, token);
-    setSelectedUser(user);
+    const { data } = await Get(`/users/${user_id}`, token);
+    setSelectedUser(data);
   };
 
   return (

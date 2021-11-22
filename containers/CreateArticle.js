@@ -22,7 +22,7 @@ import { useImagePicker } from "../services/hooks";
 import { createFormData } from "../utils/helpers";
 
 function CreateArticleScreen({ navigation, onPublishSuccess }) {
-  const token = useContext(context).token;
+  const { token, setError } = useContext(context);
   const [image, pickImageHandler] = useImagePicker([4, 3]);
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState("");
@@ -37,7 +37,7 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
 
   const publish = async () => {
     try {
-      const article = await PostImage(
+      const { data } = await PostImage(
         "/articles",
         createFormData(image, {
           title,
@@ -46,10 +46,10 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
         }),
         token
       );
-      onPublishSuccess(article);
+      onPublishSuccess(data);
       navigation.goBack();
     } catch (error) {
-      alert(JSON.stringify(error));
+      setError();
     }
   };
 

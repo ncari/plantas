@@ -31,8 +31,8 @@ function SignIn({ navigation }) {
   const handleSubmit = async () => {
     if (!validate()) return;
 
-    const token = await Login(email, password, Device.deviceName);
-    context.setToken(token);
+    const { data } = await Login(email, password, Device.deviceName);
+    context.setToken(data);
   };
   return (
     <View style={tw`flex-1 bg-white p-4`}>

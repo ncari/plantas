@@ -4,15 +4,9 @@ import tw from "twrnc";
 import moment from "moment";
 import { Heart } from "react-native-feather";
 
-import ViewArticleButton from "./Buttons/ViewArticle";
 import Profile from "../assets/profile.jpg";
 
-function PostCard({
-  data,
-  navigation,
-  onInteraction = () => {},
-  onUser = () => {},
-}) {
+function PostCard({ data, onInteraction = () => {}, onUser = () => {} }) {
   return (
     <View
       style={tw`flex-1 p-4 bg-white rounded-tl-sm rounded-tr-lg rounded-br-lg rounded-bl-lg`}
