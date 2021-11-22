@@ -20,12 +20,17 @@ import { createFormData } from "../utils/helpers";
 function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
   const { token, setError } = useContext(context);
   const [name, setName] = useState("");
-  const [water, setWater] = useState(0);
-  const [sun, setSun] = useState(0);
-  const [temperature, setTemperature] = useState(0);
+  const [water, setWater] = useState([0]);
+  const [sun, setSun] = useState([0]);
+  const [temperature, setTemperature] = useState([0]);
   const [image, pickImageHandler] = useImagePicker([3, 4]);
 
+  const formIsValid = () => {
+    return image && name;
+  };
+
   const submitHandler = async () => {
+    if (!formIsValid()) return;
     try {
       const { data } = await PostImage(
         "/plants",

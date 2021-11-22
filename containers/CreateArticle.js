@@ -31,6 +31,10 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
   const RichText = useRef(); //reference to the RichEditor component
   const [body, setBody] = useState("");
 
+  const nextIsValid = () => {
+    return image && title && resume;
+  };
+
   const next = () => {
     setShowModal(true);
   };
@@ -81,6 +85,7 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
       <TouchableOpacity
         onPressIn={next}
         style={tw`my-4 border border-green-600 px-4 py-2 rounded-lg self-center`}
+        disabled={!nextIsValid()}
       >
         <Text style={tw`text-green-600 text-center`}>Next</Text>
       </TouchableOpacity>

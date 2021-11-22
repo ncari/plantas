@@ -27,6 +27,11 @@ function NewPostModal({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setFormErrors] = useState({
+    title: false,
+    description: false,
+    image: false,
+  });
 
   const pickImage = async () => {
     if (Platform.OS !== "web") {
@@ -56,9 +61,33 @@ function NewPostModal({
     setImage(null);
     setTitle("");
     setDescription("");
+    setFormErrors({
+      title: false,
+      description: false,
+      image: false,
+    });
   }, [visible]);
 
+  const formIsValid = () => {
+    let valid = true;
+    if (!title) {
+      setFormErrors((e) => ({ ...e, title: true }));
+      valid = false;
+    }
+    if (!description) {
+      setFormErrors((e) => ({ ...e, description: true }));
+      valid = false;
+    }
+    if (!image) {
+      setFormErrors((e) => ({ ...e, image: true }));
+      valid = false;
+    }
+    return valid;
+  };
+
   const post = async () => {
+    if (!formIsValid()) return;
+
     setLoading(true);
 
     try {
@@ -85,7 +114,12 @@ function NewPostModal({
   return (
     <Modal visible={visible} onClose={close}>
       <View>
-        <Input label="Title" onChangeText={setTitle} value={title} />
+        <Input
+          label="Title"
+          onChangeText={setTitle}
+          value={title}
+          error={errors.title}
+        />
         <Input
           label="Description"
           onChangeText={setDescription}
@@ -93,6 +127,7 @@ function NewPostModal({
           multiline
           numberOfLines={5}
           textAlignVertical="top"
+          error={errors.description}
         />
       </View>
 
@@ -100,7 +135,10 @@ function NewPostModal({
         {!image ? (
           <TouchableOpacity
             onPress={pickImage}
-            style={tw`rounded-md bg-gray-100 p-24 items-center justify-center`}
+            style={[
+              tw`rounded-md bg-gray-100 p-24 items-center justify-center`,
+              errors.image && tw`border border-red-400`,
+            ]}
           >
             <Text style={tw`text-gray-600 font-bold`}>Pick an image</Text>
           </TouchableOpacity>
