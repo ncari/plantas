@@ -31,7 +31,7 @@ function UserInfoModal({
     <Modal visible={visible} onClose={onClose}>
       <View>
         {user && (
-          <View style={tw`mt-4 items-center`}>
+          <View style={tw`mt-4`}>
             <UserMetadata
               name={user.name}
               followers_count={user.followers_count}
@@ -41,7 +41,7 @@ function UserInfoModal({
             <Text>{user.followed_by && "Follows you"}</Text>
 
             <TouchableOpacity
-              style={tw`p-2 bg-green-600 rounded-xl`}
+              style={tw`p-2 bg-green-600 rounded-xl self-center`}
               onPress={user.following ? unfollow : follow}
             >
               <Text style={tw`text-white uppercase`}>

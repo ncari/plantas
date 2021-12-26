@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
+  FlatList,
   RefreshControl,
   SafeAreaView,
   ScrollView,
-  Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import UserMetadata from "../components/UserMetadata";
@@ -14,7 +13,7 @@ import { Get } from "../services/apicall";
 import context from "../services/context";
 
 function ProfileScreen() {
-  const { token, clearToken, setError } = useContext(context);
+  const { token, setError } = useContext(context);
   const [data, setData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -44,28 +43,24 @@ function ProfileScreen() {
         }
       >
         {data && (
-          <UserMetadata
-            name={data.name}
-            followers_count={data.followers_count}
-            interactions_count={data.interactions_count}
-            posts_count={data.posts_count}
-          />
+          <>
+            <UserMetadata
+              name={data.name}
+              followers_count={data.followers_count}
+              interactions_count={data.interactions_count}
+              posts_count={data.posts_count}
+            />
+            <View style={tw`my-4 border-b border-gray-100`} />
+          </>
         )}
-        <View style={tw`mt-8`}>
-          <Text style={tw`font-bold text-green-800`}>My posts</Text>
-          <Text>Here goes list</Text>
-        </View>
 
-        <View style={tw`mt-8`}>
-          <Text style={tw`font-bold text-green-800`}>My articles</Text>
-          <Text>Here goes list</Text>
-        </View>
-        <TouchableOpacity
-          style={tw`p-2 border border-red-400 rounded mt-4`}
-          onPress={clearToken}
-        >
-          <Text style={tw`text-red-400 uppercase text-center`}>Logout</Text>
-        </TouchableOpacity>
+        <FlatList
+          data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+          numColumns={3}
+          renderItem={() => (
+            <View style={tw`bg-gray-200 h-32 w-1/3 rounded mt-1 mr-1`} />
+          )}
+        />
       </ScrollView>
     </SafeAreaView>
   );
