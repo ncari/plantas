@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { View } from "react-native";
-import { Plus } from "react-native-feather";
+import { Plus, Calendar } from "react-native-feather";
 import tw from "twrnc";
 
 import MyPlantsScreen from "../containers/MyPlants.js";
 import CreatePlantScreen from "../containers/CreatePlant.js";
+import CalendarScreen from "../containers/Calendar.js";
 import context from "../services/context.js";
 import { Get } from "../services/apicall.js";
+import PlantDetails from "../containers/PlantDetails.js";
 
 const Stack = createStackNavigator();
 
@@ -47,7 +49,12 @@ function MyPlantsStack() {
         options={({ navigation }) => ({
           headerTitle: "My plants",
           headerRight: () => (
-            <View style={tw`p-4`}>
+            <View style={tw`flex-row p-4`}>
+              <Calendar
+                onPress={() => navigation.navigate("Calendar")}
+                stroke={tw.color("black")}
+                style={tw`mr-4`}
+              />
               <Plus
                 onPress={() => navigation.navigate("CreatePlant")}
                 stroke={tw.color("black")}
@@ -73,6 +80,9 @@ function MyPlantsStack() {
           <CreatePlantScreen {...props} onNewPlantSuccess={onNewPlantHandler} />
         )}
       </Stack.Screen>
+
+      <Stack.Screen name="Calendar" component={CalendarScreen} />
+      <Stack.Screen name="PlantDetails" component={PlantDetails} />
     </Stack.Navigator>
   );
 }

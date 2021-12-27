@@ -13,7 +13,14 @@ function MyPlantsScreen({ plants, loading, onRefresh, navigation }) {
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View style={tw`mt-5`} />}
         keyExtractor={(i) => i.id}
-        renderItem={({ item }) => <PlantCard {...item} />}
+        renderItem={({ item }) => (
+          <PlantCard
+            {...item}
+            onShowDetails={() =>
+              navigation.navigate("PlantDetails", { id: item.id })
+            }
+          />
+        )}
         onRefresh={onRefresh}
         refreshing={loading}
         ListHeaderComponent={() => (

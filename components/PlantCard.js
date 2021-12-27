@@ -1,12 +1,21 @@
 import React from "react";
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, Pressable } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import tw from "twrnc";
 
-function PlantCard({ name, water_ml, sun_c, temperature_c, image }) {
+function PlantCard({
+  name,
+  water_ml,
+  sun_c,
+  temperature_c,
+  image,
+  onShowDetails,
+}) {
   return (
     <View>
-      <Text style={tw`text-gray-600 font-bold mb-2 text-lg`}>{name}</Text>
+      <Pressable onPress={onShowDetails}>
+        <Text style={tw`text-gray-600 font-bold mb-2 text-lg`}>{name}</Text>
+      </Pressable>
       <View style={tw`flex-row justify-between`}>
         <Image
           source={{
