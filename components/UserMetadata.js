@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, Image } from "react-native";
 import tw from "twrnc";
 
-import Profile from "../assets/profile.jpg";
+import Profile from "../assets/blank-profile.png";
 
 function UserMetadata({
   name = "",
@@ -20,10 +20,10 @@ function UserMetadata({
       <View style={tw`flex-row mt-4 justify-evenly`}>
         <Text style={tw`text-xs text-gray-400`}>{posts_count} posts</Text>
         <Text style={tw`text-xs text-gray-400`}>
-          {interactions_count} interactions
+          {interactions_count} interacciones
         </Text>
         <Text style={tw`text-xs text-gray-400`}>
-          {followers_count} followers
+          {followers_count} seguidores
         </Text>
       </View>
     </View>

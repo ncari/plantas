@@ -115,13 +115,13 @@ function NewPostModal({
     <Modal visible={visible} onClose={close}>
       <View>
         <Input
-          label="Title"
+          label="Titulo"
           onChangeText={setTitle}
           value={title}
           error={errors.title}
         />
         <Input
-          label="Description"
+          label="Descripcion"
           onChangeText={setDescription}
           value={description}
           multiline
@@ -140,7 +140,7 @@ function NewPostModal({
               errors.image && tw`border border-red-400`,
             ]}
           >
-            <Text style={tw`text-gray-600 font-bold`}>Pick an image</Text>
+            <Text style={tw`text-gray-600 font-bold`}>Elige una imagen</Text>
           </TouchableOpacity>
         ) : (
           <Image source={{ uri: image.uri }} style={{ height: 200 }} />
@@ -158,7 +158,7 @@ function NewPostModal({
             hidesWhenStopped
           />
           {!loading && (
-            <Text style={tw`text-white uppercase font-bold`}>Post</Text>
+            <Text style={tw`text-white uppercase font-bold`}>Aceptar</Text>
           )}
         </TouchableOpacity>
       </View>

@@ -16,7 +16,7 @@ function ExploreStack() {
       <Stack.Screen
         name="/"
         options={{
-          headerTitle: "Profile",
+          headerTitle: "Perfil",
           headerRight: () => (
             <View style={tw`p-4`}>
               <LogOut stroke={tw.color("black")} onPress={clearToken} />

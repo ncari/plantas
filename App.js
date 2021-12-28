@@ -103,8 +103,16 @@ export default function App() {
           </Tab.Navigator>
         ) : (
           <Stack.Navigator>
-            <Stack.Screen name="Sign in" component={SignIn} />
-            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen
+              name="Sign in"
+              component={SignIn}
+              options={{ headerTitle: "Iniciar sesion" }}
+            />
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{ headerTitle: "Registro" }}
+            />
           </Stack.Navigator>
         )}
       </NavigationContainer>

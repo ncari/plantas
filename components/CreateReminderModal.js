@@ -18,6 +18,16 @@ const days = [
   "Sunday",
 ];
 
+const daysSpanish = [
+  "Lunes",
+  "Martes",
+  "Miercoles",
+  "Jueves",
+  "Viernes",
+  "Sabado",
+  "Domingo",
+];
+
 function CreateReminderModal({ onNewReminder, onClose }) {
   const [time, setTime] = useState(null);
   const [note, setNote] = useState("");
@@ -54,7 +64,7 @@ function CreateReminderModal({ onNewReminder, onClose }) {
           <View style={tw`flex-row items-center`}>
             {time && <Text style={tw`font-bold mr-2`}>{time}</Text>}
             <Pressable onPress={() => setShowTimePicker(true)}>
-              <Text style={tw`text-xs text-blue-400`}>Choose Time</Text>
+              <Text style={tw`text-xs text-blue-400`}>Elegir hora</Text>
             </Pressable>
           </View>
           {showTimePicker && (
@@ -70,7 +80,7 @@ function CreateReminderModal({ onNewReminder, onClose }) {
         </View>
         {daysCheckboxes.map((v, i) => (
           <View key={i} style={tw`flex-row justify-between items-center mt-2`}>
-            <Text style={tw`text-xs`}>Remind me on {days[i]}</Text>
+            <Text style={tw`text-xs`}>Recordarme el {daysSpanish[i]}</Text>
             <CheckBox
               value={daysCheckboxes[i]}
               onValueChange={(v) => updateCheckboxes(i, v)}
@@ -79,7 +89,7 @@ function CreateReminderModal({ onNewReminder, onClose }) {
           </View>
         ))}
         <Input
-          label="Note"
+          label="Nota"
           multiline
           numberOfLines={2}
           textAlignVertical="top"
@@ -87,7 +97,7 @@ function CreateReminderModal({ onNewReminder, onClose }) {
           onChangeText={setNote}
         />
         <PrimaryButton
-          label="Save"
+          label="Guardar"
           style={tw`mt-4`}
           onPress={handleCreateReminder}
         />

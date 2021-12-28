@@ -47,7 +47,7 @@ function MyPlantsStack() {
       <Stack.Screen
         name="/"
         options={({ navigation }) => ({
-          headerTitle: "My plants",
+          headerTitle: "Mis plantas",
           headerRight: () => (
             <View style={tw`flex-row p-4`}>
               <Calendar
@@ -74,15 +74,23 @@ function MyPlantsStack() {
       </Stack.Screen>
       <Stack.Screen
         name="CreatePlant"
-        options={{ headerTitle: "Create Plant" }}
+        options={{ headerTitle: "Nueva Planta" }}
       >
         {(props) => (
           <CreatePlantScreen {...props} onNewPlantSuccess={onNewPlantHandler} />
         )}
       </Stack.Screen>
 
-      <Stack.Screen name="Calendar" component={CalendarScreen} />
-      <Stack.Screen name="PlantDetails" component={PlantDetails} />
+      <Stack.Screen
+        name="Calendar"
+        component={CalendarScreen}
+        options={{ headerTitle: "Calendario" }}
+      />
+      <Stack.Screen
+        name="PlantDetails"
+        component={PlantDetails}
+        options={{ headerTitle: "Detalles de planta" }}
+      />
     </Stack.Navigator>
   );
 }

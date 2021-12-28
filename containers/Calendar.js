@@ -23,7 +23,7 @@ function Calendar() {
     <View style={tw`flex-1 bg-white`}>
       <FlatList
         data={reminders}
-        renderItem={({ item }) => <Reminder small reminder={item} />}
+        renderItem={({ item }) => <Reminder reminder={item} />}
         contentContainerStyle={tw`p-4`}
         ItemSeparatorComponent={() => <View style={tw`my-1`} />}
       />

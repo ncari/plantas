@@ -4,7 +4,7 @@ import tw from "twrnc";
 import moment from "moment";
 import { Heart } from "react-native-feather";
 
-import Profile from "../assets/profile.jpg";
+import Profile from "../assets/blank-profile.png";
 
 function PostCard({ data, onInteraction = () => {}, onUser = () => {} }) {
   return (

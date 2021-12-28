@@ -47,7 +47,7 @@ function SignIn({ navigation }) {
         <Text style={tw`text-xs text-red-400`}>Error in email</Text>
       )}
       <Input
-        label="Password"
+        label="Contraseña"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
@@ -56,16 +56,14 @@ function SignIn({ navigation }) {
       {errors.password && (
         <Text style={tw`text-xs text-red-400`}>Error in password</Text>
       )}
-      <PrimaryButton label="sign in" style={tw`mt-4`} onPress={handleSubmit} />
+      <PrimaryButton label="ingresar" style={tw`mt-4`} onPress={handleSubmit} />
       <View style={tw`flex-row items-center mt-8`}>
-        <Text style={tw`text-xs text-gray-400`}>
-          If you dont have an account{" "}
-        </Text>
+        <Text style={tw`text-xs text-gray-400`}>Si no tienes una cuenta </Text>
         <Text
           style={tw`text-xs text-green-600`}
           onPress={() => navigation.navigate("Register")}
         >
-          register here
+          registrate aqui
         </Text>
       </View>
     </View>

@@ -24,7 +24,7 @@ function HomeStack() {
       <Stack.Screen
         name="/"
         options={{
-          headerTitle: "Home",
+          headerTitle: "Inicio",
           headerRight: () => (
             <View style={tw`p-4`}>
               <Plus

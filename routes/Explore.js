@@ -47,7 +47,7 @@ function ExploreStack({ navigation }) {
       <Stack.Screen
         name="/"
         options={{
-          headerTitle: "Explore",
+          headerTitle: "Articulos",
           headerRight: () => (
             <View style={tw`p-4`}>
               <Plus
@@ -68,8 +68,15 @@ function ExploreStack({ navigation }) {
         )}
       </Stack.Screen>
 
-      <Stack.Screen name="Article" component={ArticleScreen} />
-      <Stack.Screen name="CreateArticle">
+      <Stack.Screen
+        name="Article"
+        component={ArticleScreen}
+        options={{ headerTitle: "Articulo" }}
+      />
+      <Stack.Screen
+        name="CreateArticle"
+        options={{ headerTitle: "Nuevo Articulo" }}
+      >
         {(props) => (
           <CreateArticleScreen
             {...props}

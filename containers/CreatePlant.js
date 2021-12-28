@@ -57,7 +57,7 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
             onPress={pickImageHandler}
             style={[tw`rounded-lg bg-gray-100 p-24 self-center`]}
           >
-            <Text style={tw`text-gray-600 font-bold`}>Pick an image</Text>
+            <Text style={tw`text-gray-600 font-bold`}>Elige una imagen</Text>
           </TouchableOpacity>
         ) : (
           <Image
@@ -66,13 +66,16 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
           />
         )}
 
-        <Input label="Name plant" value={name} onChangeText={setName} />
-        <Input label="Subfamily" />
+        <Input
+          label="Nombre de la planta"
+          value={name}
+          onChangeText={setName}
+        />
 
         {/* Minimal water on the day*/}
         <View style={tw`mt-8 mb-2`}>
           <Text style={tw`text-gray-400 text-xs`}>
-            Minimal water on the day
+            Minima cantidad de agua en el dia
           </Text>
           <View style={tw`flex-row items-center justify-between`}>
             <Slider
@@ -95,7 +98,7 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
 
         {/* Comfort sun */}
         <View style={tw`mt-2 mb-2`}>
-          <Text style={tw`text-gray-400 text-xs`}>Comfort sun</Text>
+          <Text style={tw`text-gray-400 text-xs`}>Sol aceptable</Text>
           <View style={tw`flex-row items-center justify-between`}>
             <Slider
               containerStyle={tw`w-4/5`}
@@ -117,7 +120,7 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
 
         {/* Comfort temperature */}
         <View style={tw`mt-2 mb-8`}>
-          <Text style={tw`text-gray-400 text-xs`}>Comfort temperature</Text>
+          <Text style={tw`text-gray-400 text-xs`}>Temperatura aceptable</Text>
           <View style={tw`flex-row items-center justify-between`}>
             <Slider
               containerStyle={tw`w-4/5`}
@@ -136,7 +139,7 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
             </View>
           </View>
         </View>
-        <PrimaryButton label="Save" onPress={submitHandler} />
+        <PrimaryButton label="Guardar" onPress={submitHandler} />
       </View>
     </ScrollView>
   );

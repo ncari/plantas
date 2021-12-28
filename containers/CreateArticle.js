@@ -65,7 +65,7 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
           style={[tw`mt-4 rounded-lg bg-gray-100 p-24`]}
         >
           <Text style={tw`text-gray-600 font-bold text-center`}>
-            Pick an image
+            Elige una imagen
           </Text>
         </TouchableOpacity>
       ) : (
@@ -74,9 +74,9 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
           style={[tw`self-center rounded-lg`, { height: 185, width: "100%" }]}
         />
       )}
-      <Input label="Title" onChangeText={setTitle} />
+      <Input label="Titulo" onChangeText={setTitle} />
       <Input
-        label="Brief resume"
+        label="Breve resumen"
         multiline
         numberOfLines={5}
         textAlignVertical="top"
@@ -87,7 +87,7 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
         style={tw`my-4 border border-green-600 px-4 py-2 rounded-lg self-center`}
         disabled={!nextIsValid()}
       >
-        <Text style={tw`text-green-600 text-center`}>Next</Text>
+        <Text style={tw`text-green-600 text-center`}>Siguiente</Text>
       </TouchableOpacity>
 
       <Modal visible={showModal} animationType="fade">
@@ -97,7 +97,7 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
               {title}
             </Text>
             <TouchableOpacity onPress={publish}>
-              <Text style={tw`text-green-600 ml-4`}>Publish</Text>
+              <Text style={tw`text-green-600 ml-4`}>Publicar</Text>
             </TouchableOpacity>
           </View>
           <View style={tw`border-b border-gray-100`} />
@@ -105,7 +105,7 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
             disabled={false}
             ref={RichText}
             style={tw`flex-1 px-2`}
-            placeholder={"Start Writing Here"}
+            placeholder={"Comienza ha escribir aqui"}
             onChange={setBody}
           />
           <RichToolbar

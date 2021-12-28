@@ -25,7 +25,7 @@ function PlantDetails({ route }) {
 
   const RemindersListHeader = () => (
     <View style={tw`flex-row items-center mb-2`}>
-      <Text>Reminders</Text>
+      <Text>Recordatorios</Text>
       <Plus stroke={tw.color("black")} onPress={() => setModal(true)} />
     </View>
   );

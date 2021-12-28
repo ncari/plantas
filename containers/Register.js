@@ -24,15 +24,19 @@ function RegisterScreen() {
   return (
     <View style={tw`flex-1 bg-white p-4`}>
       <Input label="Email" value={email} onChangeText={setEmail} />
-      <Input label="Name" value={name} onChangeText={setName} />
+      <Input label="Nombre" value={name} onChangeText={setName} />
       <Input
-        label="Password"
+        label="Contraseña"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
-      <Input label="Repeat password" secureTextEntry value={password} />
-      <PrimaryButton label="Register" style={tw`mt-4`} onPress={handleSubmit} />
+      <Input label="Repita la contraseña" secureTextEntry value={password} />
+      <PrimaryButton
+        label="Registrarse"
+        style={tw`mt-4`}
+        onPress={handleSubmit}
+      />
     </View>
   );
 }

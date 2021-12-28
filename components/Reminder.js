@@ -12,10 +12,20 @@ const days = [
   "sunday",
 ];
 
+const daysSpanish = [
+  "Lunes",
+  "Martes",
+  "Miercoles",
+  "Jueves",
+  "Viernes",
+  "Sabado",
+  "Domingo",
+];
+
 const reminderDaysStr = (reminder) => {
   const daysAux = [];
-  days.forEach((d) => {
-    if (reminder[d]) daysAux.push(d);
+  days.forEach((d, i) => {
+    if (reminder[d]) daysAux.push(daysSpanish[i]);
   });
   return daysAux
     .slice(0, daysAux.length - 1)
@@ -24,14 +34,9 @@ const reminderDaysStr = (reminder) => {
 
 function Reminder({ small, reminder = {} }) {
   return (
-    <View style={tw`py-4 rounded-lg bg-green-100`}>
+    <View style={tw`py-4 rounded-lg bg-yellow-100`}>
       <View style={tw`flex-row`}>
-        {!small && (
-          <>
-            <View style={tw`w-0.5 bg-green-600`} />
-            <View style={tw`h-0.5 w-0.5 bg-green-600 self-center`} />
-          </>
-        )}
+        {!small && <View style={tw`w-0.5 bg-yellow-600`} />}
         <View style={tw`ml-4 py-2`}>
           <Text style={tw`text-xs font-bold`}>{reminder.time}</Text>
           {!small && (
