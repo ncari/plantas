@@ -27,6 +27,7 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState("");
   const [resume, setResume] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const RichText = useRef(); //reference to the RichEditor component
   const [body, setBody] = useState("");
@@ -40,6 +41,7 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
   };
 
   const publish = async () => {
+    setLoading(true);
     try {
       const { data } = await PostImage(
         "/articles",
@@ -55,6 +57,7 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
     } catch (error) {
       setError();
     }
+    setLoading(false);
   };
 
   return (
@@ -96,7 +99,7 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
             <Text style={tw`flex-1`} numberOfLines={1}>
               {title}
             </Text>
-            <TouchableOpacity onPress={publish}>
+            <TouchableOpacity onPress={publish} disabled={loading}>
               <Text style={tw`text-green-600 ml-4`}>Publicar</Text>
             </TouchableOpacity>
           </View>

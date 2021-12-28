@@ -13,6 +13,7 @@ function PlantDetails({ route }) {
   const { id } = route.params;
   const [reminders, setReminders] = useState([]);
   const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(async () => {
     try {
@@ -31,7 +32,7 @@ function PlantDetails({ route }) {
   );
 
   const handleNewReminder = async (remainder) => {
-    // make api call
+    setLoading(true);
     try {
       const { data } = await Post(`/plants/${id}/reminders`, remainder, token);
       setReminders([...reminders, data]);
@@ -39,6 +40,7 @@ function PlantDetails({ route }) {
     } catch (e) {
       setError();
     }
+    setLoading(false);
   };
 
   return (
@@ -55,6 +57,7 @@ function PlantDetails({ route }) {
         <CreateReminderModal
           onClose={() => setModal(false)}
           onNewReminder={handleNewReminder}
+          loading={loading}
         />
       )}
     </View>

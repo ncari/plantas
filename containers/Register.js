@@ -9,16 +9,23 @@ import PrimaryButton from "../components/Buttons/PrimaryButton";
 import context from "../services/context";
 
 function RegisterScreen() {
-  const { setToken } = useContext(context);
+  const { setToken, setError } = useContext(context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     // validate
 
-    const { data } = await Register(name, email, password, Device.deviceName);
-    setToken(data);
+    setLoading(true);
+    try {
+      const { data } = await Register(name, email, password, Device.deviceName);
+      setToken(data);
+    } catch {
+      setError("Hubo un error al registrarse");
+    }
+    setLoading(false);
   };
 
   return (
@@ -36,6 +43,7 @@ function RegisterScreen() {
         label="Registrarse"
         style={tw`mt-4`}
         onPress={handleSubmit}
+        disabled={loading}
       />
     </View>
   );

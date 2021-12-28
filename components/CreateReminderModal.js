@@ -28,7 +28,7 @@ const daysSpanish = [
   "Domingo",
 ];
 
-function CreateReminderModal({ onNewReminder, onClose }) {
+function CreateReminderModal({ loading = false, onNewReminder, onClose }) {
   const [time, setTime] = useState(null);
   const [note, setNote] = useState("");
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -100,6 +100,7 @@ function CreateReminderModal({ onNewReminder, onClose }) {
           label="Guardar"
           style={tw`mt-4`}
           onPress={handleCreateReminder}
+          disabled={loading}
         />
       </View>
     </Modal>

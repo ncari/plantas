@@ -9,9 +9,10 @@ import TokenContext from "../services/context";
 import { Login } from "../services/apicall";
 
 function SignIn({ navigation }) {
-  const context = useContext(TokenContext);
+  const { setToken, setError } = useContext(TokenContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
     email: false,
     password: false,
@@ -31,8 +32,14 @@ function SignIn({ navigation }) {
   const handleSubmit = async () => {
     if (!validate()) return;
 
-    const { data } = await Login(email, password, Device.deviceName);
-    context.setToken(data);
+    setLoading(true);
+    try {
+      const { data } = await Login(email, password, Device.deviceName);
+      setToken(data);
+    } catch {
+      setError("Usuario y/o contraseña incorrectos");
+    }
+    setLoading(false);
   };
   return (
     <View style={tw`flex-1 bg-white p-4`}>
@@ -56,7 +63,12 @@ function SignIn({ navigation }) {
       {errors.password && (
         <Text style={tw`text-xs text-red-400`}>Error in password</Text>
       )}
-      <PrimaryButton label="ingresar" style={tw`mt-4`} onPress={handleSubmit} />
+      <PrimaryButton
+        label="ingresar"
+        style={tw`mt-4`}
+        onPress={handleSubmit}
+        disabled={loading}
+      />
       <View style={tw`flex-row items-center mt-8`}>
         <Text style={tw`text-xs text-gray-400`}>Si no tienes una cuenta </Text>
         <Text

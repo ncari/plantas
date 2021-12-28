@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -24,6 +24,7 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
   const [sun, setSun] = useState([0]);
   const [temperature, setTemperature] = useState([0]);
   const [image, pickImageHandler] = useImagePicker([3, 4]);
+  const [loading, setLoading] = useState(false);
 
   const formIsValid = () => {
     return image && name;
@@ -31,6 +32,8 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
 
   const submitHandler = async () => {
     if (!formIsValid()) return;
+
+    setLoading(true);
     try {
       const { data } = await PostImage(
         "/plants",
@@ -47,6 +50,7 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
     } catch (error) {
       setError();
     }
+    setLoading(false);
   };
 
   return (
@@ -139,7 +143,11 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
             </View>
           </View>
         </View>
-        <PrimaryButton label="Guardar" onPress={submitHandler} />
+        <PrimaryButton
+          label="Guardar"
+          onPress={submitHandler}
+          disabled={loading}
+        />
       </View>
     </ScrollView>
   );

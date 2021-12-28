@@ -89,7 +89,6 @@ function NewPostModal({
     if (!formIsValid()) return;
 
     setLoading(true);
-
     try {
       const { data } = await PostImage(
         "/posts",
@@ -103,7 +102,6 @@ function NewPostModal({
     } catch (err) {
       onPostFail(err);
     }
-
     setLoading(false);
   };
 
