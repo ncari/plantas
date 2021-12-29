@@ -39,7 +39,7 @@ function ExploreScreen({ navigation, articles, loading, onRefresh }) {
         <ChevronDown
           stroke={tw.color("gray-400")}
           onPress={() => {
-            navigation.navigate("Article", item);
+            navigation.navigate("Article", { article: item, name: item.title });
           }}
         />
       </View>

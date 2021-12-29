@@ -71,7 +71,7 @@ function ExploreStack({ navigation }) {
       <Stack.Screen
         name="Article"
         component={ArticleScreen}
-        options={{ headerTitle: "Articulo" }}
+        options={({ route }) => ({ headerTitle: route.params.name })}
       />
       <Stack.Screen
         name="CreateArticle"

@@ -89,7 +89,7 @@ function MyPlantsStack() {
       <Stack.Screen
         name="PlantDetails"
         component={PlantDetails}
-        options={{ headerTitle: "Detalles de planta" }}
+        options={({ route }) => ({ headerTitle: route.params.name })}
       />
     </Stack.Navigator>
   );

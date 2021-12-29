@@ -17,7 +17,10 @@ function MyPlantsScreen({ plants, loading, onRefresh, navigation }) {
           <PlantCard
             {...item}
             onShowDetails={() =>
-              navigation.navigate("PlantDetails", { id: item.id })
+              navigation.navigate("PlantDetails", {
+                id: item.id,
+                name: item.name,
+              })
             }
           />
         )}

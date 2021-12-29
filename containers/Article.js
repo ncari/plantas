@@ -4,7 +4,7 @@ import tw from "twrnc";
 import HTMLView from "react-native-htmlview";
 
 function ArticleScreen({ route }) {
-  const { title, resume, body, image } = route.params;
+  const { title, resume, body, image } = route.params.article;
   return (
     <View style={tw`flex-1`}>
       <Image
