@@ -5,6 +5,7 @@ import moment from "moment";
 import { Heart } from "react-native-feather";
 
 import Profile from "../assets/blank-profile.png";
+import { baseUrl } from "../config/config";
 
 function PostCard({ data, onInteraction = () => {}, onUser = () => {} }) {
   return (
@@ -30,7 +31,7 @@ function PostCard({ data, onInteraction = () => {}, onUser = () => {} }) {
       </View>
       <Image
         source={{
-          uri: `data:image/jpg;base64,${data.image}`,
+          uri: `${baseUrl}/${data.image_path}`,
         }}
         style={[
           tw`w-full rounded-tl-sm rounded-tr-xl rounded-bl-xl rounded-br-sm`,

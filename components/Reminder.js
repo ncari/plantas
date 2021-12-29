@@ -40,7 +40,9 @@ function Reminder({ small, reminder = {} }) {
         <View style={tw`ml-4 py-2`}>
           <Text style={tw`text-xs font-bold`}>{reminder.time}</Text>
           {!small && (
-            <Text style={tw`text-xs font-bold mt-2`}>Nombre de planta</Text>
+            <Text style={tw`text-xs font-bold mt-2`}>
+              {reminder.plant.name}
+            </Text>
           )}
           {small && reminderDaysStr(reminder) && (
             <Text>{reminderDaysStr(reminder)}</Text>

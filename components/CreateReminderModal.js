@@ -72,7 +72,7 @@ function CreateReminderModal({ loading = false, onNewReminder, onClose }) {
               mode="time"
               value={new Date()}
               onChange={(e, t) => {
-                if (t) setTime(`${t.getHours()}:${t.getMinutes()}`);
+                if (t) setTime(t.toLocaleTimeString().substring(0, 5));
                 setShowTimePicker(false);
               }}
             />

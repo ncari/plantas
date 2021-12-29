@@ -3,12 +3,14 @@ import { Text, View, Image, Pressable } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import tw from "twrnc";
 
+import { baseUrl } from "../config/config";
+
 function PlantCard({
   name,
   water_ml,
   sun_c,
   temperature_c,
-  image,
+  image_path,
   onShowDetails,
 }) {
   return (
@@ -19,7 +21,7 @@ function PlantCard({
       <View style={tw`flex-row justify-between`}>
         <Image
           source={{
-            uri: `data:image/jpg;base64,${image}`,
+            uri: `${baseUrl}/${image_path}`,
           }}
           style={[tw`rounded-lg`, { height: 185, width: 150 }]}
         />
