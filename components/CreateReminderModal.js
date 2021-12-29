@@ -41,6 +41,7 @@ function CreateReminderModal({ loading = false, onNewReminder, onClose }) {
     false,
     false,
   ]);
+  const [errors, setErrors] = useState(false);
 
   const updateCheckboxes = (i, v) => {
     const checkboxesUpdated = [...daysCheckboxes];
@@ -48,7 +49,19 @@ function CreateReminderModal({ loading = false, onNewReminder, onClose }) {
     setDaysCheckboxes(checkboxesUpdated);
   };
 
+  const validate = () => {
+    if (!time || !note) {
+      return false;
+    }
+    return true;
+  };
+
   const handleCreateReminder = () => {
+    if (!validate()) {
+      setErrors(true);
+      return;
+    }
+
     let daysToRemind = {};
     days.forEach((d, i) => {
       Object.assign(daysToRemind, { [d.toLowerCase()]: daysCheckboxes[i] });
@@ -64,7 +77,14 @@ function CreateReminderModal({ loading = false, onNewReminder, onClose }) {
           <View style={tw`flex-row items-center`}>
             {time && <Text style={tw`font-bold mr-2`}>{time}</Text>}
             <Pressable onPress={() => setShowTimePicker(true)}>
-              <Text style={tw`text-xs text-blue-400`}>Elegir hora</Text>
+              <Text
+                style={[
+                  tw`text-xs text-blue-400`,
+                  errors && !time && tw`text-red-400`,
+                ]}
+              >
+                Elegir hora
+              </Text>
             </Pressable>
           </View>
           {showTimePicker && (
@@ -95,6 +115,7 @@ function CreateReminderModal({ loading = false, onNewReminder, onClose }) {
           textAlignVertical="top"
           value={note}
           onChangeText={setNote}
+          style={errors && !note && tw`border border-red-400`}
         />
         <PrimaryButton
           label="Guardar"
