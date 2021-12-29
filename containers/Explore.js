@@ -1,11 +1,43 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, View, FlatList, Image } from "react-native";
 import { Bookmark, ChevronDown, Circle, Eye } from "react-native-feather";
 import tw from "twrnc";
 
 import { api } from "../config/config";
+import { Get } from "../services/apicall";
+import context from "../services/context";
 
-function ExploreScreen({ navigation, articles, loading, onRefresh }) {
+function ExploreScreen({ navigation, route }) {
+  const { token, setError } = useContext(context);
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (route.params && route.params.article) {
+      setArticles([route.params.article, ...articles]);
+    }
+  }, [route.params && route.params.article]);
+
+  useEffect(async () => {
+    try {
+      const { data } = await Get("/articles", token);
+      setArticles(data);
+    } catch (error) {
+      setError();
+    }
+  }, []);
+
+  const handleRefresh = async () => {
+    try {
+      setLoading(true);
+      const { data } = await Get("/articles", token);
+      setArticles(data);
+    } catch (error) {
+      setError();
+    }
+    setLoading(false);
+  };
+
   const renderItem = ({ item }) => (
     <View style={tw`p-4`}>
       <View style={tw`flex-row items-center justify-between mb-2`}>
@@ -57,7 +89,7 @@ function ExploreScreen({ navigation, articles, loading, onRefresh }) {
           <View style={tw`border-b border-gray-100 mx-4`} />
         )}
         refreshing={loading}
-        onRefresh={onRefresh}
+        onRefresh={handleRefresh}
       />
     </View>
   );

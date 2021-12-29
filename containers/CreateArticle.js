@@ -52,8 +52,11 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
         }),
         token
       );
-      onPublishSuccess(data);
-      navigation.goBack();
+      navigation.navigate({
+        name: "/",
+        params: { article: data },
+        merge: true,
+      });
     } catch (error) {
       setError();
     }

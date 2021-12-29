@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { View } from "react-native";
 import { Plus, Calendar } from "react-native-feather";
@@ -7,45 +7,16 @@ import tw from "twrnc";
 import MyPlantsScreen from "../containers/MyPlants.js";
 import CreatePlantScreen from "../containers/CreatePlant.js";
 import CalendarScreen from "../containers/Calendar.js";
-import context from "../services/context.js";
-import { Get } from "../services/apicall.js";
 import PlantDetails from "../containers/PlantDetails.js";
 
 const Stack = createStackNavigator();
 
 function MyPlantsStack() {
-  const { token, setError } = useContext(context);
-  const [loading, setLoading] = useState(false);
-  const [plants, setPlants] = useState([]);
-
-  useEffect(async () => {
-    try {
-      const { data } = await Get("/plants", token);
-      setPlants(data);
-    } catch (error) {
-      setError();
-    }
-  }, []);
-
-  const handleRefresh = async () => {
-    try {
-      setLoading(true);
-      const { data } = await Get("/plants", token);
-      setPlants(data);
-    } catch (error) {
-      setError();
-    }
-    setLoading(false);
-  };
-
-  const onNewPlantHandler = (plant) => {
-    setPlants([plant, ...plants]);
-  };
-
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="/"
+        component={MyPlantsScreen}
         options={({ navigation }) => ({
           headerTitle: "Mis plantas",
           headerRight: () => (
@@ -62,24 +33,13 @@ function MyPlantsStack() {
             </View>
           ),
         })}
-      >
-        {(props) => (
-          <MyPlantsScreen
-            {...props}
-            plants={plants}
-            loading={loading}
-            onRefresh={handleRefresh}
-          />
-        )}
-      </Stack.Screen>
+      />
+
       <Stack.Screen
         name="CreatePlant"
+        component={CreatePlantScreen}
         options={{ headerTitle: "Nueva Planta" }}
-      >
-        {(props) => (
-          <CreatePlantScreen {...props} onNewPlantSuccess={onNewPlantHandler} />
-        )}
-      </Stack.Screen>
+      />
 
       <Stack.Screen
         name="Calendar"

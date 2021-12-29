@@ -1,11 +1,43 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 import tw from "twrnc";
 
 import PlantCard from "../components/PlantCard";
 import WeekTimeline from "../components/WeekTimeline";
+import { Get } from "../services/apicall";
+import context from "../services/context";
 
-function MyPlantsScreen({ plants, loading, onRefresh, navigation }) {
+function MyPlantsScreen({ navigation, route }) {
+  const { token, setError } = useContext(context);
+  const [loading, setLoading] = useState(false);
+  const [plants, setPlants] = useState([]);
+
+  useEffect(() => {
+    if (route.params && route.params.plant) {
+      setPlants([route.params.plant, ...plants]);
+    }
+  }, [route.params && route.params.plant]);
+
+  useEffect(async () => {
+    try {
+      const { data } = await Get("/plants", token);
+      setPlants(data);
+    } catch (error) {
+      setError();
+    }
+  }, []);
+
+  const handleRefresh = async () => {
+    try {
+      setLoading(true);
+      const { data } = await Get("/plants", token);
+      setPlants(data);
+    } catch (error) {
+      setError();
+    }
+    setLoading(false);
+  };
+
   return (
     <View style={tw`flex-1 bg-white px-4`}>
       <FlatList
@@ -24,7 +56,7 @@ function MyPlantsScreen({ plants, loading, onRefresh, navigation }) {
             }
           />
         )}
-        onRefresh={onRefresh}
+        onRefresh={handleRefresh}
         refreshing={loading}
         ListHeaderComponent={() => (
           <>

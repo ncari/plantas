@@ -45,8 +45,11 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
         }),
         token
       );
-      onNewPlantSuccess(data);
-      navigation.goBack();
+      navigation.navigate({
+        name: "/",
+        params: { plant: data },
+        merge: true,
+      });
     } catch (error) {
       setError();
     }
