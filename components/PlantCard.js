@@ -3,7 +3,7 @@ import { Text, View, Image, Pressable } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import tw from "twrnc";
 
-import { baseUrl } from "../config/config";
+import { api } from "../config/config";
 
 function PlantCard({
   name,
@@ -21,7 +21,7 @@ function PlantCard({
       <View style={tw`flex-row justify-between`}>
         <Image
           source={{
-            uri: `${baseUrl}/${image_path}`,
+            uri: `${api}/${image_path}`,
           }}
           style={[tw`rounded-lg`, { height: 185, width: 150 }]}
         />

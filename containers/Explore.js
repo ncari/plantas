@@ -3,7 +3,7 @@ import { Text, View, FlatList, Image } from "react-native";
 import { Bookmark, ChevronDown, Circle, Eye } from "react-native-feather";
 import tw from "twrnc";
 
-import { baseUrl } from "../config/config";
+import { api } from "../config/config";
 
 function ExploreScreen({ navigation, articles, loading, onRefresh }) {
   const renderItem = ({ item }) => (
@@ -27,7 +27,7 @@ function ExploreScreen({ navigation, articles, loading, onRefresh }) {
       </View>
       <Image
         source={{
-          uri: `${baseUrl}/${item.image_path}`,
+          uri: `${api}/${item.image_path}`,
         }}
         style={[tw`rounded-lg w-full mb-2`, { height: 200 }]}
       />
