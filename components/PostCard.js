@@ -1,32 +1,30 @@
-import React from "react";
-import { Image, Text, View, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { Image, Text, View, TouchableOpacity, Pressable } from "react-native";
 import tw from "twrnc";
 import moment from "moment";
-import { Heart } from "react-native-feather";
 
-import Profile from "../assets/blank-profile.png";
+import { Heart } from "react-native-feather";
 import { api } from "../config/config";
 
 function PostCard({ data, onInteraction = () => {}, onUser = () => {} }) {
+  const [showDescription, setShowDescription] = useState(false);
   return (
     <View
       style={tw`flex-1 p-4 bg-white rounded-tl-sm rounded-tr-lg rounded-br-lg rounded-bl-lg`}
     >
-      <View style={tw`flex-1 flex-row mb-2`}>
-        <View style={tw`flex-1 flex-row`}>
+      <View style={tw`flex-row items-center justify-between mb-2`}>
+        <View style={tw`flex-row items-center`}>
           <TouchableOpacity onPress={onUser}>
             <Image
-              source={Profile}
-              style={[
-                tw`rounded-tl-xl rounded-tr-xl rounded-br-xl rounded-bl-sm`,
-                { height: 48, width: 48 },
-              ]}
+              source={require("../assets/blank-profile.png")}
+              style={[tw`rounded-full`, { height: 36, width: 36 }]}
             />
           </TouchableOpacity>
-          <Text style={tw`flex-1 ml-2 font-bold`}>{data.title}</Text>
-        </View>
-        <View>
-          <Text>..</Text>
+          <TouchableOpacity onPress={onUser}>
+            <Text style={tw`text-xs ml-2 tracking-tighter`}>
+              {data.user.name}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
       <Image
@@ -51,6 +49,18 @@ function PostCard({ data, onInteraction = () => {}, onUser = () => {} }) {
           </Text>
         </View>
       </View>
+      <View style={tw`mt-2`}>
+        <Text style={tw`text-xs font-bold`}>{data.title}</Text>
+      </View>
+      {!showDescription ? (
+        <Pressable onPress={() => setShowDescription(true)}>
+          <Text style={tw`text-xs text-gray-400 font-bold`}>
+            Ver descripcion
+          </Text>
+        </Pressable>
+      ) : (
+        <Text style={tw`text-xs font-bold`}>{data.description}</Text>
+      )}
       <Text style={tw`text-xs text-gray-400 mt-1`}>
         {moment(data.updated_at).fromNow()}
       </Text>
