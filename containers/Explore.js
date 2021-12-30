@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View, FlatList, Image } from "react-native";
 import { Bookmark, ChevronDown, Circle, Eye } from "react-native-feather";
+import moment from "moment";
 import tw from "twrnc";
 
 import { api } from "../config/config";
@@ -14,13 +15,15 @@ function ExploreScreen({ navigation, articles, loading, onRefresh }) {
             source={require("../assets/blank-profile.png")}
             style={[tw`rounded-full`, { height: 36, width: 36 }]}
           />
-          <Text style={tw`text-xs ml-2 tracking-tighter`}>Jane Doe</Text>
+          <Text style={tw`text-xs ml-2 tracking-tighter`}>
+            {item.user.name}
+          </Text>
           <Text style={tw`text-xs ml-2 text-gray-400 tracking-tighter mr-2`}>
-            2 Julio
+            {moment(item.created_at).format("D MMM")}
           </Text>
           <Circle fill={tw.color("gray-400")} width={6} height={6} />
           <Text style={tw`text-xs ml-2 text-gray-400 tracking-tighter`}>
-            3 min read
+            3 min lectura
           </Text>
         </View>
         <Bookmark stroke={tw.color("green-600")} />
