@@ -1,42 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Text, View, FlatList, Image } from "react-native";
 import { Bookmark, ChevronDown, Circle, Eye } from "react-native-feather";
 import tw from "twrnc";
 
 import { api } from "../config/config";
-import { Get } from "../services/apicall";
-import context from "../services/context";
+import useGetData from "../services/hooks/useGetData";
 
 function ExploreScreen({ navigation, route }) {
-  const { token, setError } = useContext(context);
-  const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [articles, setArticles, handleRefresh, loading] =
+    useGetData("/articles");
 
   useEffect(() => {
     if (route.params && route.params.article) {
       setArticles([route.params.article, ...articles]);
     }
   }, [route.params && route.params.article]);
-
-  useEffect(async () => {
-    try {
-      const { data } = await Get("/articles", token);
-      setArticles(data);
-    } catch (error) {
-      setError();
-    }
-  }, []);
-
-  const handleRefresh = async () => {
-    try {
-      setLoading(true);
-      const { data } = await Get("/articles", token);
-      setArticles(data);
-    } catch (error) {
-      setError();
-    }
-    setLoading(false);
-  };
 
   const renderItem = ({ item }) => (
     <View style={tw`p-4`}>

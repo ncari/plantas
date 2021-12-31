@@ -1,23 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { FlatList, View } from "react-native";
 import tw from "twrnc";
 
 import Reminder from "../components/Reminder";
-import { Get } from "../services/apicall";
-import context from "../services/context";
+import useGetData from "../services/hooks/useGetData";
 
 function Calendar() {
-  const { token, setError } = useContext(context);
-  const [reminders, setReminders] = useState([]);
-
-  useEffect(async () => {
-    try {
-      const { data } = await Get("/reminders", token);
-      setReminders(data);
-    } catch (err) {
-      setError();
-    }
-  }, []);
+  const [reminders, setReminders, handleRefresh, refreshing] =
+    useGetData("/reminders");
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -26,6 +16,8 @@ function Calendar() {
         renderItem={({ item }) => <Reminder reminder={item} />}
         contentContainerStyle={tw`p-4`}
         ItemSeparatorComponent={() => <View style={tw`my-1`} />}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
       />
     </View>
   );

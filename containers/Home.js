@@ -7,7 +7,7 @@ import PostCard from "../components/PostCard";
 import UserInfoModal from "../components/UserInfoModal";
 import { Get } from "../services/apicall.js";
 import context from "../services/context";
-import { usePosts } from "../services/hooks";
+import usePosts from "../services/hooks/usePosts";
 
 function HomeScreen({
   showModal = false,
@@ -15,28 +15,9 @@ function HomeScreen({
   onModalChange = () => {},
 }) {
   const { token, setError } = useContext(context);
-  const [posts, setPosts, handleInteraction] = usePosts();
-  const [refreshing, setRefreshing] = useState(false);
+  const [posts, setPosts, handleInteraction, handleRefresh, refreshing] =
+    usePosts();
   const [selectedUser, setSelectedUser] = useState(null);
-
-  useEffect(() => {
-    Get("/posts", token)
-      .then(({ data }) => setPosts(data))
-      .catch(() => setError());
-  }, []);
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-
-    try {
-      const { data } = await Get("/posts", token);
-      setPosts(data);
-    } catch (err) {
-      setError();
-    }
-
-    setRefreshing(false);
-  };
 
   const closeModal = () => {
     onModalChange("close");

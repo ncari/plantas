@@ -18,7 +18,7 @@ import tw from "twrnc";
 import Input from "../components/Input";
 import { PostImage } from "../services/apicall";
 import context from "../services/context";
-import { useImagePicker } from "../services/hooks";
+import useImagePicker from "../services/hooks/useImagePicker";
 import { createFormData } from "../utils/helpers";
 
 function CreateArticleScreen({ navigation, onPublishSuccess }) {

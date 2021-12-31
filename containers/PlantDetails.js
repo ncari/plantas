@@ -1,28 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import { Plus } from "react-native-feather";
 import tw from "twrnc";
 
 import CreateReminderModal from "../components/CreateReminderModal";
 import Reminder from "../components/Reminder";
-import { Get, Post } from "../services/apicall";
+import { Post } from "../services/apicall";
 import context from "../services/context";
+import useGetData from "../services/hooks/useGetData";
 
 function PlantDetails({ route }) {
   const { token, setError } = useContext(context);
   const { id } = route.params;
-  const [reminders, setReminders] = useState([]);
+  const [reminders, setReminders, handleRefresh, refreshing] = useGetData(
+    `/plants/${id}/reminders`
+  );
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  useEffect(async () => {
-    try {
-      const { data } = await Get(`/plants/${id}/reminders`, token);
-      setReminders(data);
-    } catch (e) {
-      setError();
-    }
-  }, []);
 
   const RemindersListHeader = () => (
     <View style={tw`flex-row items-center mb-2`}>
@@ -52,6 +46,8 @@ function PlantDetails({ route }) {
         data={reminders}
         renderItem={({ item }) => <Reminder small reminder={item} />}
         ItemSeparatorComponent={() => <View style={tw`my-1`} />}
+        onRefresh={handleRefresh}
+        refreshing={refreshing}
       />
       {modal && (
         <CreateReminderModal

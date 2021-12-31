@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import {
   FlatList,
   RefreshControl,
@@ -6,49 +6,29 @@ import {
   ScrollView,
   View,
 } from "react-native";
-import UserMetadata from "../components/UserMetadata";
 import tw from "twrnc";
 
-import { Get } from "../services/apicall";
-import context from "../services/context";
+import useGetData from "../services/hooks/useGetData";
+import UserMetadata from "../components/UserMetadata";
 
 function ProfileScreen() {
-  const { token, setError } = useContext(context);
-  const [data, setData] = useState(null);
-  const [refreshing, setRefreshing] = useState(false);
-
-  useEffect(() => {
-    Get("/user", token)
-      .then(({ data }) => setData(data))
-      .catch((err) => setError());
-  }, []);
-
-  const onRefresh = React.useCallback(async () => {
-    setRefreshing(true);
-    try {
-      const { data } = await Get("/user", token);
-      setData(data);
-    } catch (err) {
-      setError();
-    }
-    setRefreshing(false);
-  }, []);
+  const [user, setUser, handleRefresh, refreshing] = useGetData("/user");
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView
         contentContainerStyle={tw`p-4`}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
       >
-        {data && (
+        {user && (
           <>
             <UserMetadata
-              name={data.name}
-              followers_count={data.followers_count}
-              interactions_count={data.interactions_count}
-              posts_count={data.posts_count}
+              name={user.name}
+              followers_count={user.followers_count}
+              interactions_count={user.interactions_count}
+              posts_count={user.posts_count}
             />
             <View style={tw`my-4 border-b border-gray-100`} />
           </>
