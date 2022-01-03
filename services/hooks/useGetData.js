@@ -1,12 +1,12 @@
-import { useState, useEffect, useContext, useCallback } from "react";
-import { Get } from "../apicall";
-
-import context from "../context";
+import { useState, useEffect, useCallback } from "react";
+import useAxios from "./useAxios";
+import useError from "./useError";
 
 const useGetData = (path) => {
-  const { token, setError } = useContext(context);
+  const error = useError();
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const axios = useAxios();
 
   useEffect(() => {
     handleRefresh();
@@ -14,14 +14,15 @@ const useGetData = (path) => {
 
   const handleRefresh = useCallback(() => {
     setRefreshing(true);
-    Get(path, token)
+    axios
+      .get(path)
       .then(({ data }) => {
         setRefreshing(false);
         setData(data);
       })
       .catch(() => {
         setRefreshing(false);
-        setError();
+        error();
       });
   }, []);
 

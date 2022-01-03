@@ -1,10 +1,11 @@
-import { useContext } from "react";
-import { Patch } from "../apicall";
-import context from "../context";
+import useAxios from "./useAxios";
+import useError from "./useError";
 import useGetData from "./useGetData";
 
 export const usePosts = () => {
-  const { token, setError } = useContext(context);
+  const error = useError();
+  const axios = useAxios();
+
   const [posts, setPosts, handleRefresh, refreshing] = useGetData("/posts");
 
   const handleAddInteraction = async (id) => {
@@ -15,12 +16,12 @@ export const usePosts = () => {
     setPosts([...posts]);
 
     try {
-      await Patch(`/posts/${id}/interactions/add`, {}, token, false);
-    } catch (error) {
+      await axios.patch(`/posts/${id}/interactions/add`, {});
+    } catch (err) {
       posts[i].interactions_count -= 1;
       posts[i].interacted = false;
       setPosts([...posts]);
-      setError();
+      error();
     }
   };
 
@@ -32,12 +33,12 @@ export const usePosts = () => {
     setPosts([...posts]);
 
     try {
-      await Patch(`/posts/${id}/interactions/remove`, {}, token, false);
-    } catch (error) {
+      await axios.patch(`/posts/${id}/interactions/remove`, {});
+    } catch (err) {
       posts[i].interactions_count += 1;
       posts[i].interacted = true;
       setPosts([...posts]);
-      setError();
+      error();
     }
   };
 

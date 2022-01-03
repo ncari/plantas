@@ -1,5 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
-import { useEffect } from "react";
+import React, { useRef, useState } from "react";
 import {
   Image,
   Modal,
@@ -16,18 +15,19 @@ import {
 import tw from "twrnc";
 
 import Input from "../components/Input";
-import { PostImage } from "../services/apicall";
-import context from "../services/context";
+import useError from "../services/hooks/useError";
 import useImagePicker from "../services/hooks/useImagePicker";
 import { createFormData } from "../utils/helpers";
+import useAxios from "../services/hooks/useAxios";
 
-function CreateArticleScreen({ navigation, onPublishSuccess }) {
-  const { token, setError } = useContext(context);
+function CreateArticleScreen({ navigation }) {
+  const error = useError();
   const [image, pickImageHandler] = useImagePicker([4, 3]);
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState("");
   const [resume, setResume] = useState("");
   const [loading, setLoading] = useState(false);
+  const axios = useAxios();
 
   const RichText = useRef(); //reference to the RichEditor component
   const [body, setBody] = useState("");
@@ -43,22 +43,26 @@ function CreateArticleScreen({ navigation, onPublishSuccess }) {
   const publish = async () => {
     setLoading(true);
     try {
-      const { data } = await PostImage(
+      const { data } = await axios.post(
         "/articles",
         createFormData(image, {
           title,
           resume,
           body,
         }),
-        token
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       navigation.navigate({
         name: "/",
         params: { article: data },
         merge: true,
       });
-    } catch (error) {
-      setError();
+    } catch (err) {
+      error();
     }
     setLoading(false);
   };

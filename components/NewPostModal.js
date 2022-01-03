@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   Image,
@@ -10,11 +10,11 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import tw from "twrnc";
 
-import { PostImage } from "../services/apicall";
 import { createFormData } from "../utils/helpers";
-import context from "../services/context";
 import Input from "./Input";
 import Modal from "./Modal";
+import useError from "../services/hooks/useError";
+import useAxios from "../services/hooks/useAxios";
 
 function NewPostModal({
   visible,
@@ -22,7 +22,7 @@ function NewPostModal({
   onPostSuccess = () => {},
   onPostFail = () => {},
 }) {
-  const { token, setError } = useContext(context);
+  const error = useError();
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -32,13 +32,14 @@ function NewPostModal({
     description: false,
     image: false,
   });
+  const axios = useAxios();
 
   const pickImage = async () => {
     if (Platform.OS !== "web") {
       const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== "granted") {
-        setError(
+        error(
           "Lo sientimos. Neceistamos permisos de la camara para continuar."
         );
       } else {
@@ -90,13 +91,17 @@ function NewPostModal({
 
     setLoading(true);
     try {
-      const { data } = await PostImage(
+      const { data } = await axios.post(
         "/posts",
         createFormData(image, {
           title,
           description,
         }),
-        token
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       onPostSuccess(data);
     } catch (err) {

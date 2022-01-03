@@ -1,15 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { View, Text } from "react-native";
 import tw from "twrnc";
 import * as Device from "expo-device";
 
 import PrimaryButton from "../components/Buttons/PrimaryButton";
 import Input from "../components/Input";
-import TokenContext from "../services/context";
-import { Login } from "../services/apicall";
+import useSetToken from "../services/hooks/useSetToken";
+import useError from "../services/hooks/useError";
+import useAxios from "../services/hooks/useAxios";
 
 function SignIn({ navigation }) {
-  const { setToken, setError } = useContext(TokenContext);
+  const setToken = useSetToken();
+  const error = useError();
+  const axios = useAxios();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,10 +37,14 @@ function SignIn({ navigation }) {
 
     setLoading(true);
     try {
-      const { data } = await Login(email, password, Device.deviceName);
+      const { data } = await axios.post("/sanctum/token", {
+        email,
+        password,
+        device_name: Device.deviceName,
+      });
       setToken(data);
     } catch {
-      setError("Usuario y/o contraseña incorrectos");
+      error("Usuario y/o contraseña incorrectos");
     }
     setLoading(false);
   };

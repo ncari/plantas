@@ -1,12 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
 
 import NewPostModal from "../components/NewPostModal";
 import PostCard from "../components/PostCard";
 import UserInfoModal from "../components/UserInfoModal";
-import { Get } from "../services/apicall.js";
-import context from "../services/context";
+import useAxios from "../services/hooks/useAxios";
+import useError from "../services/hooks/useError";
 import usePosts from "../services/hooks/usePosts";
 
 function HomeScreen({
@@ -14,7 +14,8 @@ function HomeScreen({
   navigation,
   onModalChange = () => {},
 }) {
-  const { token, setError } = useContext(context);
+  const error = useError();
+  const axios = useAxios();
   const [posts, setPosts, handleInteraction, handleRefresh, refreshing] =
     usePosts();
   const [selectedUser, setSelectedUser] = useState(null);
@@ -30,11 +31,11 @@ function HomeScreen({
 
   const onPostFail = (err) => {
     closeModal();
-    setError();
+    error();
   };
 
   const handlePressUser = async (user_id) => {
-    const { data } = await Get(`/users/${user_id}`, token);
+    const { data } = await axios.get(`/users/${user_id}`);
     setSelectedUser(data);
   };
 
