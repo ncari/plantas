@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, View } from "react-native";
 import tw from "twrnc";
 
 import PlantCard from "../components/PlantCard";
 import WeekTimeline from "../components/WeekTimeline";
+import useGetData from "../services/hooks/useGetData";
 
-function MyPlantsScreen({ plants, loading, onRefresh, navigation }) {
+function MyPlantsScreen({ navigation, route }) {
+  const [plants, setPlants, handleRefresh, loading] = useGetData("/plants");
+
+  useEffect(() => {
+    if (route.params && route.params.plant) {
+      setPlants([route.params.plant, ...plants]);
+    }
+  }, [route.params && route.params.plant]);
+
   return (
     <View style={tw`flex-1 bg-white px-4`}>
       <FlatList
@@ -24,7 +33,7 @@ function MyPlantsScreen({ plants, loading, onRefresh, navigation }) {
             }
           />
         )}
-        onRefresh={onRefresh}
+        onRefresh={handleRefresh}
         refreshing={loading}
         ListHeaderComponent={() => (
           <>

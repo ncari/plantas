@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View, FlatList, Image } from "react-native";
 import { Bookmark, ChevronDown, Circle, Eye } from "react-native-feather";
 import moment from "moment";
 import tw from "twrnc";
 
 import { api } from "../config/config";
+import useGetData from "../services/hooks/useGetData";
 
-function ExploreScreen({ navigation, articles, loading, onRefresh }) {
+function ExploreScreen({ navigation, route }) {
+  const [articles, setArticles, handleRefresh, loading] =
+    useGetData("/articles");
+
+  useEffect(() => {
+    if (route.params && route.params.article) {
+      setArticles([route.params.article, ...articles]);
+    }
+  }, [route.params && route.params.article]);
+
   const renderItem = ({ item }) => (
     <View style={tw`p-4`}>
       <View style={tw`flex-row items-center justify-between mb-2`}>
@@ -60,7 +70,7 @@ function ExploreScreen({ navigation, articles, loading, onRefresh }) {
           <View style={tw`border-b border-gray-100 mx-4`} />
         )}
         refreshing={loading}
-        onRefresh={onRefresh}
+        onRefresh={handleRefresh}
       />
     </View>
   );

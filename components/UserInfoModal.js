@@ -1,12 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native";
 import tw from "twrnc";
 
-import { Put } from "../services/apicall";
-import context from "../services/context";
 import UserMetadata from "./UserMetadata";
 import Modal from "./Modal";
+import useAxios from "../services/hooks/useAxios";
 
 function UserInfoModal({
   user,
@@ -16,15 +15,15 @@ function UserInfoModal({
   onClose = () => {},
   // onError = () => {},
 }) {
-  const { token } = useContext(context);
+  const axios = useAxios();
 
   const unfollow = async () => {
-    await Put("/users/followers/unfollow", { id: user.id }, token);
+    await axios.put("/users/followers/unfollow", { id: user.id });
     onUnfollowSuccess();
   };
 
   const follow = async () => {
-    await Put("/users/followers/follow", { id: user.id }, token);
+    await axios.put("/users/followers/follow", { id: user.id });
     onFollowSuccess();
   };
   return (

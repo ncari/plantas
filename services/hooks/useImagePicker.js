@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import context from "./context";
+import useError from "./useError";
 
 export const useImagePicker = (aspect = [4, 3]) => {
   const [image, setImage] = useState(null);
-  const { setError } = useContext(context);
+  const error = useError();
 
   const clear = () => setImage(null);
 
@@ -14,9 +14,7 @@ export const useImagePicker = (aspect = [4, 3]) => {
       const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== "granted") {
-        setError(
-          "Lo sentimos, necesitamos permisos de la camara para continuar"
-        );
+        error("Lo sentimos, necesitamos permisos de la camara para continuar");
       } else {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -35,3 +33,5 @@ export const useImagePicker = (aspect = [4, 3]) => {
 
   return [image, pickImage, clear];
 };
+
+export default useImagePicker;

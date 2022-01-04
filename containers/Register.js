@@ -1,15 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import Input from "../components/Input";
 import tw from "twrnc";
 import * as Device from "expo-device";
 
-import { Register } from "../services/apicall";
 import PrimaryButton from "../components/Buttons/PrimaryButton";
-import context from "../services/context";
+import useSetToken from "../services/hooks/useSetToken";
+import useError from "../services/hooks/useError";
+import useAxios from "../services/hooks/useAxios";
 
 function RegisterScreen() {
-  const { setToken, setError } = useContext(context);
+  const setToken = useSetToken();
+  const error = useError();
+  const axios = useAxios();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -20,10 +23,15 @@ function RegisterScreen() {
 
     setLoading(true);
     try {
-      const { data } = await Register(name, email, password, Device.deviceName);
+      const { data } = await axios.post("/users/register", {
+        name,
+        email,
+        password,
+        device_name: Device.deviceName,
+      });
       setToken(data);
     } catch {
-      setError("Hubo un error al registrarse");
+      error("Hubo un error al registrarse");
     }
     setLoading(false);
   };

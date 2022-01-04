@@ -1,99 +1,41 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
 
 import NewPostModal from "../components/NewPostModal";
 import PostCard from "../components/PostCard";
 import UserInfoModal from "../components/UserInfoModal";
-import { Get, Patch } from "../services/apicall.js";
-import context from "../services/context";
+import useAxios from "../services/hooks/useAxios";
+import useError from "../services/hooks/useError";
+import usePosts from "../services/hooks/usePosts";
 
 function HomeScreen({
   showModal = false,
   navigation,
   onModalChange = () => {},
 }) {
-  const [plants, setPlants] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
+  const error = useError();
+  const axios = useAxios();
+  const [posts, setPosts, handleInteraction, handleRefresh, refreshing] =
+    usePosts();
   const [selectedUser, setSelectedUser] = useState(null);
-  const { token, setError } = useContext(context);
-
-  useEffect(() => {
-    Get("/posts", token)
-      .then(({ data }) => setPlants(data))
-      .catch(() => setError());
-  }, []);
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-
-    try {
-      const { data } = await Get("/posts", token);
-      setPlants(data);
-    } catch (err) {
-      setError();
-    }
-
-    setRefreshing(false);
-  };
 
   const closeModal = () => {
     onModalChange("close");
   };
 
   const onPostSuccess = (post) => {
-    setPlants([post, ...plants]);
+    setPosts([post, ...posts]);
     closeModal();
   };
 
   const onPostFail = (err) => {
     closeModal();
-    setError();
-  };
-
-  const handleAddInteraction = async (id) => {
-    const i = plants.findIndex((p) => p.id === id);
-
-    plants[i].interactions_count += 1;
-    plants[i].interacted = true;
-    setPlants([...plants]);
-
-    try {
-      await Patch(`/posts/${id}/interactions/add`, {}, token, false);
-    } catch (error) {
-      plants[i].interactions_count -= 1;
-      plants[i].interacted = false;
-      setPlants([...plants]);
-      setError();
-    }
-  };
-
-  const handleRemoveInteraction = async (id) => {
-    const i = plants.findIndex((p) => p.id === id);
-
-    plants[i].interactions_count -= 1;
-    plants[i].interacted = false;
-    setPlants([...plants]);
-
-    try {
-      await Patch(`/posts/${id}/interactions/remove`, {}, token, false);
-    } catch (error) {
-      plants[i].interactions_count += 1;
-      plants[i].interacted = true;
-      setPlants([...plants]);
-      setError();
-    }
-  };
-
-  const handleInteraction = (id) => {
-    const post = plants.find((p) => p.id === id);
-    if (post && post.interacted) handleRemoveInteraction(id);
-    else if (post && !post.interacted) handleAddInteraction(id);
-    else throw Error("No post with this id in the state");
+    error();
   };
 
   const handlePressUser = async (user_id) => {
-    const { data } = await Get(`/users/${user_id}`, token);
+    const { data } = await axios.get(`/users/${user_id}`);
     setSelectedUser(data);
   };
 
@@ -108,7 +50,7 @@ function HomeScreen({
             }}
           />
         )}
-        data={plants}
+        data={posts}
         renderItem={({ item }) => (
           <PostCard
             data={item}

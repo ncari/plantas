@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -12,19 +12,20 @@ import tw from "twrnc";
 
 import PrimaryButton from "../components/Buttons/PrimaryButton";
 import Input from "../components/Input";
-import { PostImage } from "../services/apicall";
-import context from "../services/context";
-import { useImagePicker } from "../services/hooks";
+import useImagePicker from "../services/hooks/useImagePicker";
+import useError from "../services/hooks/useError";
 import { createFormData } from "../utils/helpers";
+import useAxios from "../services/hooks/useAxios";
 
-function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
-  const { token, setError } = useContext(context);
+function CreatePlantScreen({ navigation }) {
+  const error = useError();
   const [name, setName] = useState("");
   const [water, setWater] = useState([0]);
   const [sun, setSun] = useState([0]);
   const [temperature, setTemperature] = useState([0]);
   const [image, pickImageHandler] = useImagePicker([3, 4]);
   const [loading, setLoading] = useState(false);
+  const axios = useAxios();
 
   const formIsValid = () => {
     return image && name;
@@ -35,7 +36,7 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
 
     setLoading(true);
     try {
-      const { data } = await PostImage(
+      const { data } = await axios.post(
         "/plants",
         createFormData(image, {
           name: name,
@@ -43,12 +44,19 @@ function CreatePlantScreen({ onNewPlantSuccess, navigation }) {
           sun_c: sun[0],
           temperature_c: temperature[0],
         }),
-        token
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-      onNewPlantSuccess(data);
-      navigation.goBack();
-    } catch (error) {
-      setError();
+      navigation.navigate({
+        name: "/",
+        params: { plant: data },
+        merge: true,
+      });
+    } catch (err) {
+      error();
     }
     setLoading(false);
   };

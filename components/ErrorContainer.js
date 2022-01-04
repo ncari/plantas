@@ -1,20 +1,20 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Text, View } from "react-native";
 import { X } from "react-native-feather";
 import tw from "twrnc";
 
-import context from "../services/context";
+import useErrorMsg from "../services/hooks/useErrorMsg";
 
 function ErrorContainer() {
-  const { error, clearError } = useContext(context);
+  const { error_msg, clear } = useErrorMsg();
   return (
     <>
-      {error !== "" && (
+      {error_msg !== "" && (
         <View
           style={tw`p-4 bg-red-100 justify-between rounded-lg absolute bottom-10 w-11/12 self-center flex-row items-center`}
         >
-          <Text style={tw`text-red-400`}>{error}</Text>
-          <X stroke={tw.color("red-400")} onPress={clearError} />
+          <Text style={tw`text-red-400`}>{error_msg}</Text>
+          <X stroke={tw.color("red-400")} onPress={clear} />
         </View>
       )}
     </>
