@@ -6,6 +6,7 @@ import tw from "twrnc";
 
 import { api } from "../config/config";
 import useGetData from "../services/hooks/useGetData";
+import ImagePlaceholder from "../components/ImagePlaceholder";
 
 function ExploreScreen({ navigation, route }) {
   const [articles, setArticles, handleRefresh, loading] =
@@ -38,7 +39,7 @@ function ExploreScreen({ navigation, route }) {
         </View>
         <Bookmark stroke={tw.color("green-600")} />
       </View>
-      <Image
+      <ImagePlaceholder
         source={{
           uri: `${api}/${item.image_path}`,
         }}

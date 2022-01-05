@@ -5,6 +5,7 @@ import moment from "moment";
 
 import { Heart } from "react-native-feather";
 import { api } from "../config/config";
+import ImagePlaceholder from "./ImagePlaceholder";
 
 function PostCard({ data, onInteraction = () => {}, onUser = () => {} }) {
   const [showDescription, setShowDescription] = useState(false);
@@ -27,7 +28,8 @@ function PostCard({ data, onInteraction = () => {}, onUser = () => {} }) {
           </TouchableOpacity>
         </View>
       </View>
-      <Image
+
+      <ImagePlaceholder
         source={{
           uri: `${api}/${data.image_path}`,
         }}

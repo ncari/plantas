@@ -1,9 +1,10 @@
 import React from "react";
-import { Text, View, Image, Pressable } from "react-native";
+import { Text, View, Pressable } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import tw from "twrnc";
 
 import { api } from "../config/config";
+import ImagePlaceholder from "./ImagePlaceholder";
 
 function PlantCard({
   name,
@@ -19,7 +20,7 @@ function PlantCard({
         <Text style={tw`text-gray-600 font-bold mb-2 text-lg`}>{name}</Text>
       </Pressable>
       <View style={tw`flex-row justify-between`}>
-        <Image
+        <ImagePlaceholder
           source={{
             uri: `${api}/${image_path}`,
           }}
