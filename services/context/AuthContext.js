@@ -6,18 +6,16 @@ const AuthContext = createContext(null);
 const { Provider } = AuthContext;
 
 const AuthProvider = ({ children }) => {
-  const [tokenChecked, setTokenChecked] = useState(false);
-  const [token, setTokenDefalut] = useState("");
+  const [token, setTokenDefault] = useState({ value: "", checked: false });
 
   useEffect(async () => {
     let token = await SecureStore.getItemAsync("token");
-    if (token) setToken(token);
-    setTokenChecked(true);
+    setTokenDefault({ value: token, checked: true });
   }, []);
 
   const setToken = async (t) => {
     await SecureStore.setItemAsync("token", t);
-    setTokenDefalut(t);
+    setTokenDefault({ value: t, checked: true });
   };
 
   const logout = () => {
@@ -28,7 +26,6 @@ const AuthProvider = ({ children }) => {
     <Provider
       value={{
         token,
-        tokenChecked,
         setToken,
         logout,
       }}
