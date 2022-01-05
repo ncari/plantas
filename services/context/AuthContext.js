@@ -16,7 +16,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const setToken = async (t) => {
-    await SecureStore.setItemAsync("token", token);
+    await SecureStore.setItemAsync("token", t);
     setTokenDefalut(t);
   };
 
